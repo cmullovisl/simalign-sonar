@@ -15,7 +15,8 @@ try:
 except ImportError:
 	nx = None
 import torch
-from transformers import BertModel, BertTokenizer, XLMModel, XLMTokenizer, RobertaModel, RobertaTokenizer, XLMRobertaModel, XLMRobertaTokenizer, AutoConfig, AutoModel, AutoTokenizer
+from transformers import BertModel, BertTokenizer, XLMModel, XLMTokenizer, RobertaModel, RobertaTokenizer, XLMRobertaModel, XLMRobertaTokenizer, AutoConfig, AutoModel, AutoTokenizer, NllbTokenizer
+from transformers.models.m2m_100.modeling_m2m_100 import M2M100Encoder
 
 from simalign.utils import get_logger
 
@@ -32,6 +33,7 @@ class EmbeddingLoader(object):
 			'roberta-base': (RobertaModel, RobertaTokenizer),
 			'xlm-roberta-base': (XLMRobertaModel, XLMRobertaTokenizer),
 			'xlm-roberta-large': (XLMRobertaModel, XLMRobertaTokenizer),
+			'cointegrated/SONAR_200_text_encoder': (M2M100Encoder, NllbTokenizer),
 		}
 
 		self.model = model
@@ -75,7 +77,8 @@ class SentenceAligner(object):
 	def __init__(self, model: str = "bert", token_type: str = "bpe", distortion: float = 0.0, matching_methods: str = "mai", device: str = "cpu", layer: int = 8):
 		model_names = {
 			"bert": "bert-base-multilingual-cased",
-			"xlmr": "xlm-roberta-base"
+			"xlmr": "xlm-roberta-base",
+			"sonar": "cointegrated/SONAR_200_text_encoder",
 			}
 		all_matching_methods = {"a": "inter", "m": "mwmf", "i": "itermax", "f": "fwd", "r": "rev"}
 
